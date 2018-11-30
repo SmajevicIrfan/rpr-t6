@@ -101,7 +101,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <RadioButton mnemonicParsing="false" selected="true" text="Da">
+                        <RadioButton mnemonicParsing="false" text="Da">
                      <toggleGroup>
                         <ToggleGroup fx:id="self_financing" />
                      </toggleGroup></RadioButton>
@@ -122,7 +122,7 @@
                      <toggleGroup>
                         <ToggleGroup fx:id="war" />
                      </toggleGroup></RadioButton>
-                        <RadioButton mnemonicParsing="false" selected="true" text="Ne" toggleGroup="$war" GridPane.columnIndex="1" />
+                        <RadioButton mnemonicParsing="false" text="Ne" toggleGroup="$war" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
             </children>
