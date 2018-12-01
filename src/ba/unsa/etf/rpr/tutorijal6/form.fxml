@@ -48,7 +48,7 @@
             <Label text="JMBG" />
             <TextField fx:id="ssn" prefWidth="200.0" GridPane.columnIndex="1" />
             <Label text="Datum Rođenja" GridPane.rowIndex="1" />
-            <DatePicker fx:id="birthdate" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DatePicker fx:id="birthDate" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Mjesto Rođenja" GridPane.rowIndex="2" />
             <ComboBox fx:id="birthplace" editable="true" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                 <items>
@@ -141,7 +141,7 @@
                     <children>
                         <RadioButton mnemonicParsing="false" text="Da">
                      <toggleGroup>
-                        <ToggleGroup fx:id="self_financing" />
+                        <ToggleGroup fx:id="selfFinancing" />
                      </toggleGroup></RadioButton>
                         <RadioButton mnemonicParsing="false" text="Ne" GridPane.columnIndex="1">
                      <toggleGroup>
