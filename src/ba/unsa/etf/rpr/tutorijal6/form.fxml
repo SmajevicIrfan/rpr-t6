@@ -14,7 +14,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
+<?import java.net.URL?>
 <VBox alignment="CENTER" scaleShape="false" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ba.unsa.etf.rpr.tutorijal6.Controller">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
     <TitledPane alignment="TOP_LEFT" collapsible="false" contentDisplay="TOP" focusTraversable="false" text="Osnovni podaci">
         <GridPane hgap="10.0">
             <columnConstraints>

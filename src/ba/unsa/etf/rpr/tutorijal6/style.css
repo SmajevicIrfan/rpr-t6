@@ -1,0 +1,7 @@
+.validField {
+    -fx-background-color: #77AA66;
+}
+
+.invalidField {
+    -fx-background-color: #FF584F;
+}

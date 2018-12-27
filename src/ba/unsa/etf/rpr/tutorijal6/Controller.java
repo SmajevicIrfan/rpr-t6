@@ -1,5 +1,7 @@
 package ba.unsa.etf.rpr.tutorijal6;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
@@ -15,23 +17,23 @@ public class Controller implements Initializable {
     public TextField idNumber;
     public TextField ssn;
     public DatePicker birthDate;
-    public ComboBox birthplace;
+    public ComboBox<String> birthplace;
     public TextField address;
     public TextField phone;
     public TextField email;
-    public ComboBox department;
-    public ComboBox yearOfStudy;
-    public ComboBox degree;
+    public ComboBox<String> department;
+    public ComboBox<String> yearOfStudy;
+    public ComboBox<String> degree;
     public ToggleGroup selfFinancing;
     public ToggleGroup war;
 
+    private static final String datePattern = "dd.MM.yyyy";
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String datePattern = "dd.MM.yyyy";
         birthDate.setPromptText(datePattern);
         birthDate.setConverter(new StringConverter<>() {
-            final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(datePattern);
-
             @Override
             public String toString(LocalDate date) {
                 return date == null ? "" : dateTimeFormatter.format(date);
@@ -44,6 +46,67 @@ public class Controller implements Initializable {
                 } else {
                     return null;
                 }
+            }
+        });
+
+        firstName.textProperty().addListener(nameValidator(firstName));
+        lastName.textProperty().addListener(nameValidator(lastName));
+
+        idNumber.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (isValidIDNumber(newValue)) {
+                idNumber.getStyleClass().removeAll("invalidField");
+                idNumber.getStyleClass().add("validField");
+            } else {
+                idNumber.getStyleClass().removeAll("validField");
+                idNumber.getStyleClass().add("invalidField");
+            }
+        });
+
+        ssn.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (isValidSSN(newValue)) {
+                ssn.getStyleClass().removeAll("invalidField");
+                ssn.getStyleClass().add("validField");
+            } else {
+                ssn.getStyleClass().removeAll("validField");
+                ssn.getStyleClass().add("invalidField");
+            }
+        });
+
+        birthDate.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (isValidBirthDate(newValue.format(dateTimeFormatter))) {
+                birthDate.getStyleClass().removeAll("invalidField");
+                birthDate.getStyleClass().add("validField");
+            } else {
+                birthDate.getStyleClass().removeAll("validField");
+                birthDate.getStyleClass().add("invalidField");
+            }
+        });
+
+        birthplace.valueProperty().addListener(nonEmptyValidator(birthplace));
+
+        email.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (isValidEmail(newValue)) {
+                email.getStyleClass().removeAll("invalidField");
+                email.getStyleClass().add("validField");
+            } else {
+                email.getStyleClass().removeAll("validField");
+                email.getStyleClass().add("invalidField");
+            }
+        });
+
+        department.valueProperty().addListener(nonEmptyValidator(department));
+        yearOfStudy.valueProperty().addListener(nonEmptyValidator(yearOfStudy));
+        degree.valueProperty().addListener(nonEmptyValidator(degree));
+    }
+
+    private static ChangeListener<String> nameValidator(TextField field) {
+        return ((observable, oldValue, newValue) -> {
+            if (isValidName(field.getText())) {
+                field.getStyleClass().removeAll("invalidField");
+                field.getStyleClass().add("validField");
+            } else {
+                field.getStyleClass().removeAll("validField");
+                field.getStyleClass().add("invalidField");
             }
         });
     }
@@ -79,18 +142,32 @@ public class Controller implements Initializable {
     }
 
     private boolean isValidBirthDate(String birthDate) {
-        return birthDate.replaceAll("\\.", "").equals(
-                ssn.getText(0, 6));
+        String birthSSN = birthDate.replaceAll("\\.", "");
+        System.out.println(birthSSN.substring(0, 4) + birthSSN.substring(5, 7));
+        return (birthSSN.substring(0, 4) + birthSSN.substring(5, 8)).equals(
+                ssn.getText(0, 7));
     }
 
     private static boolean isValidEmail(String email) {
         if (email == null || email.isEmpty())
-            return true;
+            return false;
 
         String pattern =
-                "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\\\.[a-zA-Z0-9-]+)*$";
+                "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)+$";
 
         return email.matches(pattern);
+    }
+
+    private static ChangeListener<String> nonEmptyValidator(Control control) {
+        return ((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.trim().isEmpty()) {
+                control.getStyleClass().removeAll("invalidField");
+                control.getStyleClass().add("validField");
+            } else {
+                control.getStyleClass().removeAll("validField");
+                control.getStyleClass().add("invalidField");
+            }
+        });
     }
 
     private static int getDigit(String number, int digitNumber) {
